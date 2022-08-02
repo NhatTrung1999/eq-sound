@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import "./assets/fonts/razerf5.css";
+import "./assets/fonts/roboto.css";
+import "./assets/css/main.css";
+import "./assets/css/profile.css";
+import "./assets/css/tooltip.css";
+import { Wrapper } from "./Layout";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="main-container">
+            <Wrapper />
+        </div>
+    );
 }
 
 export default App;
