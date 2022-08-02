@@ -2,7 +2,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { addProfile } from "../features/eqSound/eqSlice";
 
 function Toolbar() {
-    const { listData } = useSelector(state => state.eq.listData);
+    const { listData, activeId } = useSelector((state) => {
+        return {
+            listData: state.eq.listData,
+            activeId: state.eq.activeId,
+        };
+    });
 
     const dispatch = useDispatch();
 
@@ -10,10 +15,12 @@ function Toolbar() {
         const newProfile = {
             id: listData.length,
             icon: "custom",
-            name: "new profile",
+            name: "New profile",
         };
         dispatch(addProfile(newProfile));
     };
+
+    const show = listData.find((profile) => profile.id === activeId).icon;
 
     return (
         <div className="toolbar flex">
@@ -22,8 +29,14 @@ function Toolbar() {
                 id="profileAdd"
                 onClick={handleAddProfile}
             ></div>
-            <div className="icon edit" id="profileEdit"></div>
-            <div className="icon delete" id="profileDelete"></div>
+            <div
+                className={`icon edit ${show === "custom" ? "show" : ""}`}
+                id="profileEdit"
+            ></div>
+            <div
+                className={`icon delete ${show === "custom" ? "show" : ""}`}
+                id="profileDelete"
+            ></div>
 
             <div className="icon down" id="profileDown"></div>
             <div className="icon up disabled" id="profileUp"></div>
