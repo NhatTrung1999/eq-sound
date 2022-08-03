@@ -30,13 +30,58 @@ export const eqSlice = createSlice({
             return {
                 ...state,
                 listData: [...state.listData, action.payload],
-                selectedIndex: state.listData.length,
+                activeId: state.listData.length,
             };
         },
-        editProfile: {},
-        deleteProfile: {},
-        downProfile: {},
-        upProfile: {},
+        editProfile: (state, action) => {
+            const id = action.payload.id;
+            const newValue = action.payload.value;
+            const listData = state.listData.map((profile) => {
+                if (profile.id === id) {
+                    return {
+                        ...profile,
+                        name: newValue
+                    };
+                }
+                return profile;
+            });
+            return {
+                ...state,
+                listData: listData,
+            };
+        },
+        deleteProfile: (state, action) => {
+            const id = action.payload;
+            const listData = [...state.listData];
+            const newProfiles = listData.filter((profile) => profile.id !== id);
+            return {
+                ...state,
+                listData: newProfiles,
+                activeId: newProfiles[id - 1].id,
+            };
+        },
+        downProfile: (state, action) => {
+            const id = action.payload;
+            const newProfile = [...state.listData]
+            newProfile.splice(id + 2, 0, newProfile[id])
+            newProfile.splice(id, 1)
+            return {
+                ...state,
+                listData: newProfile
+            } 
+
+        },
+        upProfile: (state, action) => {
+            const id = action.payload;
+            const newProfile = [...state.listData]
+            newProfile.splice(id - 1, 0, newProfile[id])
+            newProfile.splice(id + 1, 1)
+            return {
+                ...state,
+                listData: newProfile
+            } 
+
+        },
     },
 });
 
