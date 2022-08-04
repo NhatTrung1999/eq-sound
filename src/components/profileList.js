@@ -22,7 +22,6 @@ function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
     const valueChange = listData[getId()].name;
     const changeEditProfile = useCallback(() => {
         inputRef.current.value = listData[getId()].name;
-        inputRef.current.style.top = listData[getId()].id * 30 + "px";
         inputRef.current.focus();
         inputRef.current.select();
     }, [inputRef, getId, valueChange]);
@@ -60,6 +59,7 @@ function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
                 placeholder="Enter Profile Name"
                 defaultValue={valueChange}
                 maxLength="25"
+                style={{top: getId() * 30}}
                 ref={inputRef}
                 onBlur={(e) => {
                     changeProfile(e.target.value);

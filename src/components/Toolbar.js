@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     addProfile,
@@ -19,9 +19,15 @@ function Toolbar({ showEdit }) {
     });
 
     const dispatch = useDispatch();
-    const show = listData.find((profile) => profile.id === activeId).icon;
 
-    console.log(listData[activeId])
+    const getId = () => {
+        for (let x in listData) {
+            if (listData[x].id === activeId) {
+                return parseInt(x);
+            }
+        }
+    };
+    const show = listData[getId()].icon;
 
     const handleAddProfile = () => {
         const newProfile = {
@@ -30,14 +36,6 @@ function Toolbar({ showEdit }) {
             name: "New profile",
         };
         dispatch(addProfile(newProfile));
-    };
-
-    const getId = () => {
-        for (let x in listData) {
-            if (listData[x].id === activeId) {
-                return parseInt(x);
-            }
-        }
     };
 
     const handleDown = () => {
@@ -65,14 +63,17 @@ function Toolbar({ showEdit }) {
                 <div
                     className={`icon edit ${show === "custom" ? "show" : ""}`}
                     id="profileEdit"
-                    onClick={showEdit}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        showEdit();
+                    }} 
                 ></div>
                 <div
                     className={`icon delete ${show === "custom" ? "show" : ""}`}
                     id="profileDelete"
                     onClick={(e) => {
                         e.stopPropagation();
-                        setShowDelAlert(true)
+                        setShowDelAlert(true);
                     }}
                 ></div>
 
@@ -92,8 +93,8 @@ function Toolbar({ showEdit }) {
             <ProfileDel
                 showDel={showDelAlert}
                 onConfirm={() => {
-                    setShowDelAlert(false)
-                    handleDelete()
+                    setShowDelAlert(false);
+                    handleDelete();
                 }}
                 onCancel={() => {
                     setShowDelAlert(false);

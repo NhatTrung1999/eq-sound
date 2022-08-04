@@ -19,15 +19,15 @@ function ProfileDel({ showDel, onCancel, onConfirm }) {
     const delRef = useRef();
 
     useEffect(() => {
-        const handleClickOutside = (e) => {
+        const event = (e) => {
             if (showDel && !delRef.current.contains(e.target)) {
                 onCancel && onCancel();
             }
         };
 
-        window.addEventListener("click", handleClickOutside);
+        window.addEventListener("click", event);
 
-        return () => window.removeEventListener("click", handleClickOutside);
+        return () => window.removeEventListener("click", event);
     }, [showDel, onCancel]);
 
     return (

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectedProfile } from "../features/eqSound/eqSlice";
 import ProfileList from "./profileList";
 import Toolbar from "./Toolbar";
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 
 function DrawerSelect() {
     const [on, setOn] = useState(false);
@@ -23,6 +23,8 @@ function DrawerSelect() {
     const selectedChange = (id) => {
         dispatch(selectedProfile(id));
     };
+
+    console.log(on)
 
     return (
         <div id="profileWrapper" className="drawer-select flex">
