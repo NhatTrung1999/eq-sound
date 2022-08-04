@@ -15,7 +15,7 @@ export const eqSlice = createSlice({
                 name: "Demo long text demo long text demo",
             },
         ],
-        activeId: 0
+        activeId: 0,
     },
     reducers: {
         selectedProfile: (state, action) => {
@@ -53,16 +53,16 @@ export const eqSlice = createSlice({
         deleteProfile: (state, action) => {
             const id = action.payload;
             const listData = [...state.listData];
-            const newProfiles = listData.filter((profile) => profile.id !== id);
+            listData.splice(id, 1)
             return {
                 ...state,
-                listData: newProfiles,
-                activeId: newProfiles[id - 1].id,
+                listData: listData,
+                activeId: listData[id - 1].id,
             };
         },
         downProfile: (state, action) => {
             const id = action.payload;
-            const newProfile = [...state.listData]
+            const newProfile = [...state.listData];
             newProfile.splice(id + 2, 0, newProfile[id])
             newProfile.splice(id, 1)
             return {

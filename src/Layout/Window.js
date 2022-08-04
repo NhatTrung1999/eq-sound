@@ -9,11 +9,19 @@ function Window() {
         };
     });
 
+    const getId = () => {
+        for (let x in listData) {
+            if (listData[x].id === activeId){
+                return parseInt(x)
+            }
+        }
+    }
+
     return (
         <div className="thx-window">
             <div className="sub-title flex">
                 <h1 id="eqTitle" className="eq-title">
-                    {listData[activeId].name}
+                    {listData[getId()].name}
                 </h1>
             </div>
         </div>

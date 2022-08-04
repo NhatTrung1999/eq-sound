@@ -1,9 +1,8 @@
-import { useRef, useCallback, useEffect } from "react";
-import {useSelector, useDispatch} from 'react-redux'
-import { editProfile } from '../features/eqSound/eqSlice'
+import { useRef, useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { editProfile } from "../features/eqSound/eqSlice";
 
-function ProfileList({ option = [], onChange, selectedId, show}) {
-    const ref = useRef();
+function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
     const inputRef = useRef();
     const { listData, activeId } = useSelector((state) => {
         return {
@@ -13,28 +12,32 @@ function ProfileList({ option = [], onChange, selectedId, show}) {
     });
 
     const dispatch = useDispatch();
-
+    const getId = () => {
+        for (let x in listData) {
+            if (listData[x].id === activeId) {
+                return parseInt(x);
+            }
+        }
+    };
+    const valueChange = listData[getId()].name;
     const changeEditProfile = useCallback(() => {
-        inputRef.current.value = ref.current.innerText;
-        inputRef.current.style.top = ref.current.offsetTop +'px';
+        inputRef.current.value = listData[getId()].name;
+        inputRef.current.style.top = listData[getId()].id * 30 + "px";
         inputRef.current.focus();
         inputRef.current.select();
-    }, [inputRef, ref])
-            
+    }, [inputRef, getId, valueChange]);
+
     useEffect(() => {
         changeEditProfile();
-    }, [changeEditProfile])
+    }, [changeEditProfile]);
 
     const changeProfile = (name) => {
-        const valueChange = { id: activeId, value: name };
+        const valueChange = { id: getId(), value: name };
         dispatch(editProfile(valueChange));
     };
 
-    const valueChange = listData.find(profile => profile.id === activeId).name
-
     return (
-        <div id="profileList" className="scrollable" >
-            
+        <div id="profileList" className="scrollable">
             {option.map((profile) => (
                 <div
                     id={profile.id}
@@ -47,19 +50,21 @@ function ProfileList({ option = [], onChange, selectedId, show}) {
                     onClick={() => {
                         onChange(profile.id);
                     }}
-                    ref={ref}
                 >
                     {profile.name}
                 </div>
             ))}
             <input
                 id="profileRename"
-                className={`profile-item ${show ? 'show' : ''}`}
+                className={`profile-item ${show ? "show" : ""}`}
                 placeholder="Enter Profile Name"
-                value={valueChange}
+                defaultValue={valueChange}
                 maxLength="25"
                 ref={inputRef}
-                onChange={e => changeProfile(e.target.value)}
+                onBlur={(e) => {
+                    changeProfile(e.target.value);
+                    onBlur()
+                }}
             />
         </div>
     );

@@ -1,7 +1,16 @@
+import {useState} from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { addProfile, downProfile, upProfile } from "../features/eqSound/eqSlice";
+import {
+    addProfile,
+    downProfile,
+    upProfile,
+    deleteProfile
+} from "../features/eqSound/eqSlice";
+import ProfileDel from "./profileDel";
 
-function Toolbar({ showEdit, showDel }) {
+function Toolbar({ showEdit }) {
+    const [showDelAlert, setShowDelAlert] = useState(false);
+
     const { listData, activeId } = useSelector((state) => {
         return {
             listData: state.eq.listData,
@@ -21,46 +30,74 @@ function Toolbar({ showEdit, showDel }) {
         dispatch(addProfile(newProfile));
     };
 
-    
+    const getId = () => {
+        for (let x in listData) {
+            if (listData[x].id === activeId) {
+                return parseInt(x);
+            }
+        }
+    };
+
     const handleDown = () => {
-        dispatch(downProfile(activeId));
+        dispatch(downProfile(getId()));
     };
 
     const handleUp = () => {
-        dispatch(upProfile(activeId));
+        if (getId() - 1 >= 0) {
+            dispatch(upProfile(getId()));
+        }
     };
 
+    const handleDelete = () => {
+        dispatch(deleteProfile(getId()));
+    };
 
     return (
-        <div className="toolbar flex">
-            <div
-                className="icon add"
-                id="profileAdd"
-                onClick={handleAddProfile}
-            ></div>
-            <div
-                className={`icon edit ${show === "custom" ? "show" : ""}`}
-                id="profileEdit"
-                onClick={showEdit}
-            ></div>
-            <div
-                className={`icon delete ${show === "custom" ? "show" : ""}`}
-                id="profileDelete"
-                onClick={showDel}
-            ></div>
+        <>
+            <div className="toolbar flex">
+                <div
+                    className="icon add"
+                    id="profileAdd"
+                    onClick={handleAddProfile}
+                ></div>
+                <div
+                    className={`icon edit ${show === "custom" ? "show" : ""}`}
+                    id="profileEdit"
+                    onClick={showEdit}
+                ></div>
+                <div
+                    className={`icon delete ${show === "custom" ? "show" : ""}`}
+                    id="profileDelete"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDelAlert(true)
+                    }}
+                ></div>
 
-            <div
-                className={`icon down ${
-                    activeId === listData.length - 1 ? "disabled" : ""
-                }`}
-                id="profileDown"
-                onClick={handleDown}
-            ></div>
-            <div
-                className={`icon up ${activeId === 0 ? "disabled" : ""}`}
-                id="profileUp" onClick={handleUp}
-            ></div>
-        </div>
+                <div
+                    className={`icon down ${
+                        getId() === listData.length - 1 ? "disabled" : ""
+                    }`}
+                    id="profileDown"
+                    onClick={handleDown}
+                ></div>
+                <div
+                    className={`icon up ${getId() === 0 ? "disabled" : ""}`}
+                    id="profileUp"
+                    onClick={handleUp}
+                ></div>
+            </div>
+            <ProfileDel
+                showDel={showDelAlert}
+                onConfirm={() => {
+                    setShowDelAlert(false)
+                    handleDelete()
+                }}
+                onCancel={() => {
+                    setShowDelAlert(false);
+                }}
+            />
+        </>
     );
 }
 

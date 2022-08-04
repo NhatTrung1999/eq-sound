@@ -1,35 +1,50 @@
-import {useState, useRef, useEffect} from 'react'
-import { useSelector, useDispatch } from "react-redux";
-import { deleteProfile } from '../features/eqSound/eqSlice'
+import { useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 
-function ProfileDel({ showDel }) {
-    const [showDelete, setShowDelete] = useState(true);
+function ProfileDel({ showDel, onCancel, onConfirm }) {
     const { listData, activeId } = useSelector((state) => {
         return {
             listData: state.eq.listData,
             activeId: state.eq.activeId,
         };
     });
-    const dispatch = useDispatch();
+    const getId = () => {
+        for (let x in listData) {
+            if (listData[x].id === activeId) {
+                return parseInt(x);
+            }
+        }
+    };
 
     const delRef = useRef();
 
-    const handleDelete = () => {
-        dispatch(deleteProfile(activeId))
-        setShowDelete(!showDelete);
-    }
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (showDel && !delRef.current.contains(e.target)) {
+                onCancel && onCancel();
+            }
+        };
+
+        window.addEventListener("click", handleClickOutside);
+
+        return () => window.removeEventListener("click", handleClickOutside);
+    }, [showDel, onCancel]);
 
     return (
         <div
             id="profileDelCfm"
-            className={`profile-del alert flex ${showDel === showDelete? "show" : ""}`}
+            className={`profile-del alert flex ${showDel ? "show" : ""}`}
             ref={delRef}
         >
             <div className="title">delete eq</div>
             <div className="body-text t-center" id="delName">
-                {listData[activeId].name}
+                {listData[getId()].name}
             </div>
-            <div className="thx-btn" id="cfmDelete" onClick={handleDelete}>
+            <div
+                className="thx-btn"
+                id="cfmDelete"
+                onClick={() => onConfirm && onConfirm()}
+            >
                 delete
             </div>
         </div>
