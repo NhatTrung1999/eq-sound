@@ -22,9 +22,8 @@ export const eqSlice = createSlice({
             const id = action.payload;
             return {
                 ...state,
-                activeId: id
-            }
-
+                activeId: id,
+            };
         },
         addProfile: (state, action) => {
             return {
@@ -40,7 +39,7 @@ export const eqSlice = createSlice({
                 if (profile.id === id) {
                     return {
                         ...profile,
-                        name: newValue
+                        name: newValue,
                     };
                 }
                 return profile;
@@ -53,34 +52,33 @@ export const eqSlice = createSlice({
         deleteProfile: (state, action) => {
             const id = action.payload;
             const listData = [...state.listData];
-            listData.splice(id, 1)
+            listData.splice(id, 1);
+            const newId = listData[0].id;
             return {
                 ...state,
                 listData: listData,
-                activeId: listData[id - 1].id,
+                activeId: newId,
             };
         },
         downProfile: (state, action) => {
             const id = action.payload;
             const newProfile = [...state.listData];
-            newProfile.splice(id + 2, 0, newProfile[id])
-            newProfile.splice(id, 1)
+            newProfile.splice(id + 2, 0, newProfile[id]);
+            newProfile.splice(id, 1);
             return {
                 ...state,
-                listData: newProfile
-            } 
-
+                listData: newProfile,
+            };
         },
         upProfile: (state, action) => {
             const id = action.payload;
-            const newProfile = [...state.listData]
-            newProfile.splice(id - 1, 0, newProfile[id])
-            newProfile.splice(id + 1, 1)
+            const newProfile = [...state.listData];
+            newProfile.splice(id - 1, 0, newProfile[id]);
+            newProfile.splice(id + 1, 1);
             return {
                 ...state,
-                listData: newProfile
-            } 
-
+                listData: newProfile,
+            };
         },
     },
 });

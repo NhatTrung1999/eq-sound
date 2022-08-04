@@ -21,6 +21,8 @@ function Toolbar({ showEdit }) {
     const dispatch = useDispatch();
     const show = listData.find((profile) => profile.id === activeId).icon;
 
+    console.log(listData[activeId])
+
     const handleAddProfile = () => {
         const newProfile = {
             id: listData.length,

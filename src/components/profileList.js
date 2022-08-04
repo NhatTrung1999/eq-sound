@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect, useState } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { editProfile } from "../features/eqSound/eqSlice";
 
@@ -32,7 +32,7 @@ function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
     }, [changeEditProfile]);
 
     const changeProfile = (name) => {
-        const valueChange = { id: getId(), value: name };
+        const valueChange = { id: activeId, value: name };
         dispatch(editProfile(valueChange));
     };
 
