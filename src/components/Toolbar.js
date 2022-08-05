@@ -63,10 +63,7 @@ function Toolbar({ showEdit }) {
                 <div
                     className={`icon edit ${show === "custom" ? "show" : ""}`}
                     id="profileEdit"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        showEdit();
-                    }} 
+                    onClick={showEdit}
                 ></div>
                 <div
                     className={`icon delete ${show === "custom" ? "show" : ""}`}

@@ -1,42 +1,7 @@
-import { useRef, useCallback, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { editProfile } from "../features/eqSound/eqSlice";
-
-function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
-    const inputRef = useRef();
-    const { listData, activeId } = useSelector((state) => {
-        return {
-            listData: state.eq.listData,
-            activeId: state.eq.activeId,
-        };
-    });
-
-    const dispatch = useDispatch();
-    const getId = () => {
-        for (let x in listData) {
-            if (listData[x].id === activeId) {
-                return parseInt(x);
-            }
-        }
-    };
-    const valueChange = listData[getId()].name;
-    const changeEditProfile = useCallback(() => {
-        inputRef.current.value = listData[getId()].name;
-        inputRef.current.focus();
-        inputRef.current.select();
-    }, [inputRef, getId, valueChange]);
-
-    useEffect(() => {
-        changeEditProfile();
-    }, [changeEditProfile]);
-
-    const changeProfile = (name) => {
-        const valueChange = { id: activeId, value: name };
-        dispatch(editProfile(valueChange));
-    };
+function ProfileList({ option = [], onChange, selectedId}) {
 
     return (
-        <div id="profileList" className="scrollable">
+        <>
             {option.map((profile) => (
                 <div
                     id={profile.id}
@@ -53,7 +18,7 @@ function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
                     {profile.name}
                 </div>
             ))}
-            <input
+            {/* <input
                 id="profileRename"
                 className={`profile-item ${show ? "show" : ""}`}
                 placeholder="Enter Profile Name"
@@ -65,8 +30,8 @@ function ProfileList({ option = [], onChange, selectedId, show, onBlur }) {
                     changeProfile(e.target.value);
                     onBlur()
                 }}
-            />
-        </div>
+            /> */}
+        </>
     );
 }
 

@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import { selectedProfile } from "../features/eqSound/eqSlice";
 import ProfileList from "./profileList";
+import ProfileRename from "./profileRename";
 import Toolbar from "./Toolbar";
-import { useState, useLayoutEffect } from "react";
+import { useState } from "react";
 
 function DrawerSelect() {
     const [on, setOn] = useState(false);
@@ -19,22 +20,22 @@ function DrawerSelect() {
 
     const dispatch = useDispatch();
 
-
     const selectedChange = (id) => {
         dispatch(selectedProfile(id));
     };
 
-    console.log(on)
-
     return (
         <div id="profileWrapper" className="drawer-select flex">
-            <ProfileList
-                option={listData}
-                selectedId={activeId}
-                onChange={selectedChange}
-                show={on}
-                onBlur={() => setOn(false)}
-            />
+            <div id="profileList" className="scrollable">
+                {/* profileList */}
+                <ProfileList
+                    option={listData}
+                    selectedId={activeId}
+                    onChange={selectedChange}
+                />
+                {/* profileRename */}
+                <ProfileRename show={on} onBlur={() => setOn(false)} />
+            </div>
             <Toolbar showEdit={showEdit} />
         </div>
     );
