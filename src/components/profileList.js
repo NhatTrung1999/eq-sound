@@ -18,19 +18,6 @@ function ProfileList({ option = [], onChange, selectedId}) {
                     {profile.name}
                 </div>
             ))}
-            {/* <input
-                id="profileRename"
-                className={`profile-item ${show ? "show" : ""}`}
-                placeholder="Enter Profile Name"
-                defaultValue={valueChange}
-                maxLength="25"
-                style={{top: getId() * 30}}
-                ref={inputRef}
-                onBlur={(e) => {
-                    changeProfile(e.target.value);
-                    onBlur()
-                }}
-            /> */}
         </>
     );
 }

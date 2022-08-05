@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { nanoid } from "@reduxjs/toolkit";
 import { useSelector, useDispatch } from "react-redux";
 import {
     addProfile,
     downProfile,
     upProfile,
-    deleteProfile
+    deleteProfile,
 } from "../features/eqSound/eqSlice";
 import ProfileDel from "./profileDel";
 
@@ -30,12 +31,13 @@ function Toolbar({ showEdit }) {
     const show = listData[getId()].icon;
 
     const handleAddProfile = () => {
-        const newProfile = {
-            id: listData.length,
-            icon: "custom",
-            name: "New profile",
-        };
-        dispatch(addProfile(newProfile));
+        dispatch(
+            addProfile({
+                id: nanoid(),
+                icon: "custom",
+                name: "New profile",
+            })
+        );
     };
 
     const handleDown = () => {

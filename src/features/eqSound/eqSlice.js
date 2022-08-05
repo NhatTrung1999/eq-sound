@@ -26,10 +26,11 @@ export const eqSlice = createSlice({
             };
         },
         addProfile: (state, action) => {
+            const id = action.payload.id
             return {
                 ...state,
                 listData: [...state.listData, action.payload],
-                activeId: state.listData.length,
+                activeId: id,
             };
         },
         editProfile: (state, action) => {
@@ -53,6 +54,7 @@ export const eqSlice = createSlice({
             const id = action.payload;
             const listData = [...state.listData];
             listData.splice(id, 1);
+            // listData.filter(profile => profile.id !== id)
             const newId = listData[0].id;
             return {
                 ...state,
